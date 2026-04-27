@@ -1,1 +1,165 @@
-<p>home works!</p>
+<div class="">
+  <section
+    class="py-24 bg-gradient-to-br from-light-bg to-[#E0E7FF] min-h-[600px] flex items-center overflow-hidden"
+  >
+    <div class="custom-container grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div class="animate-fadeInUp">
+        <h1
+          class="text-5xl lg:text-6xl font-bold leading-tight mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+        >
+          We Build Scalable Digital Solutions
+        </h1>
+        <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+          Transform your business with cutting-edge technology. From concept to deployment, we
+          deliver excellence.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a routerLink="/hire-us" class="btn-primary text-white px-8 py-4 rounded-lg font-bold btn"
+            >Start Your Project</a
+          >
+          <a
+            routerLink="/projects"
+            class="bg-white text-primary border border-primary/20 px-8 py-4 rounded-lg font-bold hover:bg-slate-50 transition-all"
+            >View Our Work</a
+          >
+        </div>
+      </div>
+
+      <div class="relative h-[400px] hidden lg:block">
+        <div
+          class="absolute top-0 left-0 w-32 h-32 bg-white rounded-2xl shadow-lg flex items-center justify-center animate-float"
+        >
+          <i class="fas fa-code text-5xl text-secondary"></i>
+        </div>
+        <div
+          class="absolute top-12 right-0 w-32 h-32 bg-white rounded-2xl shadow-lg flex items-center justify-center animate-float [animation-delay:1s]"
+        >
+          <i class="fas fa-chart-line text-5xl text-secondary"></i>
+        </div>
+        <div
+          class="absolute bottom-0 left-12 w-32 h-32 bg-white rounded-2xl shadow-lg flex items-center justify-center animate-float [animation-delay:2s]"
+        >
+          <i class="fas fa-rocket text-5xl text-secondary"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="custom-container text-center">
+      <div class="mb-16">
+        <h2 class="text-4xl font-bold text-primary mb-4">Our Services</h2>
+        <p class="text-slate-500">Comprehensive solutions for your digital transformation</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        @for (s of services; track s.title) {
+          <div
+            class="p-10 bg-light-bg border border-slate-100 rounded-xl hover:-translate-y-2 hover:shadow-xl transition-all group"
+          >
+            <div
+              class="w-16 h-16 bg-gradient-to-br from-secondary to-accent rounded-xl flex items-center justify-center text-3xl text-white mb-6 mx-auto"
+            >
+              <i [class]="'fas ' + s.icon"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-primary">{{ s.title }}</h3>
+            <p class="text-slate-600 mb-5">{{ s.desc }}</p>
+            <a
+              [routerLink]="s.link"
+              class="text-secondary font-bold hover:gap-2 flex items-center justify-center gap-1 transition-all"
+            >
+              Learn More →
+            </a>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="custom-container">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-primary mb-4">Featured Projects</h2>
+        <p class="text-slate-500">Showcase of our latest successful implementations</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        @for (p of projects; track p.title) {
+          <div class="flex flex-col md:flex-row items-center">
+            <div class="w-full md:w-1/2 h-64 rounded-xl overflow-hidden shadow-md">
+              <div [class]="'w-full h-full bg-gradient-to-br ' + p.gradient"></div>
+            </div>
+            <div
+              class="w-full md:w-1/2 bg-white p-8 border border-slate-100 rounded-xl shadow-xl md:-ml-12 z-10 mt-4 md:mt-0"
+            >
+              <span
+                class="inline-block bg-gradient-to-r from-secondary to-accent text-white text-[10px] font-bold px-3 py-1 rounded-full mb-3"
+                >{{ p.tag }}</span
+              >
+              <h3 class="text-xl font-bold text-primary mb-3">{{ p.title }}</h3>
+              <p class="text-sm text-slate-600 mb-4">{{ p.desc }}</p>
+              <a [routerLink]="p.link" class="text-secondary font-bold text-sm">View Project →</a>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+  <section class="bg-gradient-to-br from-[#F8FAFC] to-[#E0E7FF] py-20">
+    <div class="custom-container mx-auto px-6">
+      <div class="text-center mb-16 space-y-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-slate-900">What Our Clients Say</h2>
+        <p class="text-slate-600 max-w-2xl mx-auto">
+          Real feedback from companies we've partnered with
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        @for (item of testimonials; track item.name) {
+          <div
+            class="bg-white p-8 rounded-2xl border border-slate-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group"
+          >
+            <div class="flex gap-1 mb-4 text-[#FBB040]">
+              @for (star of [1, 2, 3, 4, 5]; track star) {
+                <i class="fas fa-star text-sm"></i>
+              }
+            </div>
+
+            <p class="text-slate-600 italic leading-relaxed mb-8 text-[15px]">
+              {{ item.text }}
+            </p>
+
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 rounded-full bg-gradient-to-br from-secondary to-accent text-white flex items-center justify-center font-bold text-sm shadow-md group-hover:scale-110 transition-transform"
+              >
+                {{ item.initials }}
+              </div>
+              <div>
+                <div class="font-bold text-slate-900">{{ item.name }}</div>
+                <div class="text-xs text-slate-500">{{ item.role }}</div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+  <section class="bg-gradient-to-br from-[#0F172A] to-[#1E293B] py-20">
+    <div class="custom-container mx-auto ">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+        @for (stat of stats; track stat.label) {
+          <div class="text-center group">
+            <div
+              class="text-5xl font-bold text-secondary mb-3 transition-transform group-hover:scale-110 duration-300"
+            >
+              {{ stat.number }}
+            </div>
+            <div class="text-lg font-semibold text-white mb-2">{{ stat.label }}</div>
+            <p class="text-slate-400 text-sm">{{ stat.sub }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+</div>

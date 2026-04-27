@@ -1,1 +1,189 @@
-<p>contact works!</p>
+<header class="bg-gradient-to-br from-[#F8FAFC] to-[#E0E7FF] py-20 text-center">
+  <div class="custom-container mx-auto px-4">
+    <h1 class="text-5xl font-bold text-primary mb-4">Get In Touch</h1>
+    <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+      We'd love to hear from you. Reach out to us anytime.
+    </p>
+  </div>
+</header>
+
+<section class="py-20 bg-white">
+  <div class="custom-container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-16">
+      <div class="animate-fade-in-left">
+        <h2 class="text-3xl font-bold text-primary mb-8">Send us a Message</h2>
+        <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex flex-col gap-2">
+              <label class="text-sm font-semibold text-slate-700">Full Name *</label>
+              <input
+                type="text"
+                name="name"
+                ngModel
+                required
+                class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="text-sm font-semibold text-slate-700">Email Address *</label>
+              <input
+                type="email"
+                name="email"
+                ngModel
+                required
+                class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+              />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex flex-col gap-2">
+              <label class="text-sm font-semibold text-slate-700">Phone Number *</label>
+              <input
+                type="text"
+                name="phone"
+                ngModel
+                required
+                class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="text-sm font-semibold text-slate-700">Company Name</label>
+              <input
+                type="text"
+                name="compony-name"
+                ngModel
+                required
+                class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+              />
+            </div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-slate-700">Subject *</label>
+            <select
+              name="subject"
+              ngModel
+              required
+              class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+            >
+              <option value="">Select a subject</option>
+              <option value="project">Project Proposal</option>
+              <option value="support">Technical Support</option>
+            </select>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-slate-700">Message *</label>
+            <textarea
+              name="message"
+              ngModel
+              rows="6"
+              required
+              class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="privacy"
+              name="privacy"
+              ngModel
+              required
+              class="w-5 h-5 accent-secondary"
+            />
+            <label for="privacy" class="text-sm text-slate-600"
+              >I agree to the privacy policy and terms of service</label
+            >
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="!contactForm.valid"
+            class="bg-secondary text-white px-8 py-4 rounded-lg font-bold hover:bg-secondary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-lg shadow-secondary/20"
+          >
+            Send Message
+          </button>
+        </form>
+      </div>
+
+      <div class="space-y-8 animate-fade-in-right">
+        <h2 class="text-3xl font-bold text-primary mb-8">Contact Information</h2>
+
+        @for (info of contactInfo; track info.title) {
+          <div
+            class="flex gap-4 p-6 bg-[#F8FAFC] rounded-xl border border-slate-100 hover:translate-x-2 hover:shadow-md transition-all duration-300"
+          >
+            <div
+              class="w-12 h-12 shrink-0 bg-gradient-to-br from-secondary to-accent rounded-xl flex items-center justify-center text-white text-xl"
+            >
+              <i [class]="info.icon"></i>
+            </div>
+            <div class="info-content">
+              <h4 class="font-bold text-primary mb-1">{{ info.title }}</h4>
+              @if (info.link) {
+                <a
+                  [href]="info.link"
+                  class="text-slate-600 text-sm hover:text-secondary hover:underline"
+                  >{{ info.content }}</a
+                >
+              } @else {
+                <p class="text-slate-600 text-sm leading-relaxed">{{ info.content }}</p>
+              }
+            </div>
+          </div>
+        }
+
+        <div class="pt-6">
+          <h4 class="font-bold text-primary mb-4">Follow Us</h4>
+          <div class="flex gap-3">
+            <a
+              href="#"
+              class="w-11 h-11 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center text-white hover:-translate-y-1 transition-all"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a
+              href="#"
+              class="w-11 h-11 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center text-white hover:-translate-y-1 transition-all"
+              ><i class="fab fa-linkedin"></i
+            ></a>
+            <a
+              href="#"
+              class="w-11 h-11 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center text-white hover:-translate-y-1 transition-all"
+              ><i class="fab fa-github"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-gradient-to-br from-[#F8FAFC] to-[#E0E7FF]">
+  <div class="custom-container mx-auto px-4 max-w-4xl">
+    <h2 class="text-3xl font-bold text-center text-primary mb-12">Frequently Asked Questions</h2>
+    <div class="space-y-4">
+      @for (faq of faqs; track $index) {
+        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+          <button
+            (click)="toggleFaq($index)"
+            class="w-full p-6 text-left flex justify-between items-center group"
+          >
+            <span class="font-bold text-primary group-hover:text-secondary transition-colors">{{
+              faq.q
+            }}</span>
+            <i
+              class="fas fa-chevron-down text-secondary transition-transform duration-300"
+              [class.rotate-180]="faq.active"
+            ></i>
+          </button>
+          <div
+            class="overflow-hidden transition-all duration-300"
+            [style.max-height]="faq.active ? '200px' : '0px'"
+          >
+            <p class="px-6 pb-6 text-slate-600 text-sm leading-relaxed">{{ faq.a }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
