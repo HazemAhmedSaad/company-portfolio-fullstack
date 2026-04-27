@@ -1,0 +1,178 @@
+<section
+  class="bg-gradient-to-br from-[#F8FAFC] to-[#E0E7FF] py-24 min-h-[500px] flex items-center"
+>
+  <div class="custom-container mx-auto px-4">
+    <div class="max-w-4xl animate-fade-in-up">
+      <h1 class="text-[48px] font-bold text-primary leading-tight mb-6">
+        Let's Build Something Extraordinary Together
+      </h1>
+      <p class="text-xl text-slate-600 leading-relaxed mb-10">
+        Partner with TechVision to transform your vision into a market-leading digital solution.
+        With 150+ successful projects, we're ready to exceed your expectations.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        @for (benefit of benefits; track benefit) {
+          <div class="flex items-center gap-3 text-slate-800 font-medium text-base">
+            <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+            <span>{{ benefit }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-white">
+  <div class="custom-container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center text-primary mb-16">
+      Why Companies Choose TechVision
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div
+        class="p-10 bg-[#F8FAFC] border border-slate-200 rounded-xl text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-secondary group"
+      >
+        <div class="text-[48px] text-secondary mb-5 group-hover:scale-110 transition-transform">
+          <i class="fas fa-star"></i>
+        </div>
+        <h3 class="text-xl font-bold text-primary mb-3">Proven Expertise</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          8 years of industry experience delivering cutting-edge solutions across diverse sectors
+          and technologies.
+        </p>
+      </div>
+      <div
+        class="p-10 bg-[#F8FAFC] border border-slate-200 rounded-xl text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-secondary group"
+      >
+        <div class="text-[48px] text-secondary mb-5 group-hover:scale-110 transition-transform">
+          <i class="fas fa-rocket"></i>
+        </div>
+        <h3 class="text-xl font-bold text-primary mb-3">Fast Execution</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Agile methodologies ensure rapid development without compromising quality or attention to
+          detail.
+        </p>
+      </div>
+      <div
+        class="p-10 bg-[#F8FAFC] border border-slate-200 rounded-xl text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-secondary group"
+      >
+        <div class="text-[48px] text-secondary mb-5 group-hover:scale-110 transition-transform">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h3 class="text-xl font-bold text-primary mb-3">Security First</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Enterprise-grade security practices protect your data and ensure compliance with industry
+          standards.
+        </p>
+      </div>
+      <div
+        class="p-10 bg-[#F8FAFC] border border-slate-200 rounded-xl text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-secondary group"
+      >
+        <div class="text-[48px] text-secondary mb-5 group-hover:scale-110 transition-transform">
+          <i class="fas fa-headset"></i>
+        </div>
+        <h3 class="text-xl font-bold text-primary mb-3">Dedicated Support</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Continuous support beyond launch, with regular updates, monitoring, and optimization
+          services.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-white border-t border-slate-50">
+  <div class="custom-container mx-auto px-4 max-w-3xl">
+    <h2 class="text-3xl font-bold text-center text-primary mb-16">Our Engagement Process</h2>
+    <div
+      class="space-y-12 relative before:absolute before:left-8 before:top-0 before:h-full before:w-0.5 before:bg-slate-100"
+    >
+      @for (step of processSteps; track step.title; let i = $index) {
+        <div
+          class="flex gap-8 relative z-10 animate-fade-in-up"
+          [style.animation-delay]="i * 100 + 'ms'"
+        >
+          <div
+            class="w-16 h-16 shrink-0 bg-gradient-to-br from-secondary to-accent rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-secondary/20"
+          >
+            {{ i + 1 }}
+          </div>
+          <div class="pt-3">
+            <h4 class="text-xl font-bold text-primary mb-2">{{ step.title }}</h4>
+            <p class="text-slate-600 text-sm leading-relaxed">{{ step.desc }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-gradient-to-br from-[#F8FAFC] to-[#E0E7FF]">
+  <div class="custom-container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center text-primary mb-16">Flexible Engagement Models</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-center">
+      @for (plan of pricingPlans; track plan.title) {
+        <div
+          [class]="
+            plan.featured
+              ? 'bg-white p-12 rounded-2xl border-2 border-secondary scale-105 shadow-2xl relative z-20'
+              : 'bg-white p-12 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-2 transition-all duration-300 relative'
+          "
+        >
+          @if (plan.badge) {
+            <span
+              class="absolute -top-3 left-6 bg-gradient-to-br from-secondary to-accent text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md"
+              >{{ plan.badge }}</span
+            >
+          }
+          <h3 class="text-2xl font-bold text-primary mb-3 mt-2">{{ plan.title }}</h3>
+          <p class="text-slate-500 text-sm mb-8">{{ plan.desc }}</p>
+
+          <ul class="space-y-4 mb-10">
+            @for (feature of plan.features; track feature) {
+              <li class="flex items-center gap-3 text-sm text-slate-600">
+                <i class="fas fa-check text-green-500"></i> {{ feature }}
+              </li>
+            }
+          </ul>
+
+          <div class="text-lg font-bold text-primary mb-8">{{ plan.ctaText }}</div>
+          <button
+            [class]="
+              plan.featured
+                ? 'w-full bg-secondary text-white py-4 rounded-lg font-bold hover:shadow-lg hover:shadow-secondary/30 transition-all'
+                : 'w-full border-2 border-secondary text-secondary py-4 rounded-lg font-bold hover:bg-secondary hover:text-white transition-all cursor-pointer'
+            "
+          >
+            {{ plan.featured ? 'Discuss Options' : 'Get Quote' }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="py-24 bg-primary relative overflow-hidden">
+  <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+    <div class="absolute -right-20 -top-20 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="custom-container mx-auto px-4 text-center relative z-10">
+    <h2 class="text-4xl font-bold text-white mb-6">Ready to Start Your Project?</h2>
+    <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto">
+      Let's have a conversation about your goals and how we can help you achieve them.
+    </p>
+    <div class="flex flex-wrap justify-center gap-6">
+      <button
+        class="bg-secondary text-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-secondary/90 hover:-translate-y-1 transition-all shadow-xl shadow-secondary/20 cursor-pointer"
+      >
+        Schedule Free Consultation
+      </button>
+      <button
+        class="border-2 border-white/30 text-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-primary transition-all cursor-pointer"
+      >
+        Call Us: +1 (555) 123-4567
+      </button>
+    </div>
+  </div>
+</section>

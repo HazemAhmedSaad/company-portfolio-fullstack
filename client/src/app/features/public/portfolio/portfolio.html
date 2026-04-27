@@ -1,1 +1,56 @@
-<p>portfolio works!</p>
+<section class="bg-primary py-20 relative overflow-hidden">
+  <div class="custom-container text-center relative z-10">
+    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 animate-fade-in-up">Our Portfolio</h1>
+    <p class="text-text-light opacity-80 max-w-xl mx-auto italic">Visual showcase of our diverse digital craft</p>
+  </div>
+</section>
+
+<section class="py-16 bg-white min-h-screen">
+  <div class="custom-container">
+    
+    <div class="flex flex-wrap justify-center gap-3 mb-16">
+      @for (filter of ['all', 'web', 'dashboard', 'ecommerce', 'mobile']; track filter) {
+        <button 
+          (click)="setFilter(filter)"
+          [class]="activeFilter === filter ? 'btn-primary' : 'btn-secondary'"
+          class="btn btn-md capitalize transition-all duration-300">
+          {{ filter === 'all' ? 'All Work' : filter }}
+        </button>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (project of filteredProjects; track project.title) {
+        <div 
+          class="group relative h-80 rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-500 animate-fade-in-up"
+          [style.background]="project.gradient">
+          
+          <div class="absolute inset-0 bg-primary/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-center items-center text-center p-8">
+            <span class="text-xs font-bold text-accent uppercase tracking-widest mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+              {{ project.category }}
+            </span>
+            <h3 class="text-2xl font-bold text-white mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+              {{ project.title }}
+            </h3>
+            <p class="text-text-light text-sm mb-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
+              {{ project.description }}
+            </p>
+            <a href="#" class="btn btn-outline border-white text-white hover:bg-white hover:text-primary btn-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150">
+              View Case Study →
+            </a>
+          </div>
+
+          <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/60 to-transparent group-hover:opacity-0 transition-opacity">
+            <h3 class="text-white font-bold">{{ project.title }}</h3>
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (filteredProjects.length === 0) {
+      <div class="text-center py-20">
+        <p class="text-slate-400 italic">No projects found in this category.</p>
+      </div>
+    }
+  </div>
+</section>

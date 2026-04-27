@@ -1,1 +1,165 @@
-<p>dashboard works!</p>
+<!-- PAGE CONTENT -->
+<main class="flex-1 overflow-y-auto">
+  <div class="p-8">
+    <!-- DASHBOARD SECTION -->
+    <section id="dashboard" class="section-content fade-in">
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p class="text-gray-600 mt-2">Welcome back! Here's your portfolio overview.</p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Projects -->
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-600 text-sm font-medium">Total Projects</p>
+              <p class="text-3xl font-bold text-gray-900 mt-2">24</p>
+              <p class="text-green-600 text-sm mt-2">
+                <i class="fas fa-arrow-up"></i> 12% from last month
+              </p>
+            </div>
+            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-folder-open text-indigo-600 text-xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Services -->
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-600 text-sm font-medium">Total Services</p>
+              <p class="text-3xl font-bold text-gray-900 mt-2">8</p>
+              <p class="text-gray-500 text-sm mt-2">Active services</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-briefcase text-blue-600 text-xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Messages -->
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-600 text-sm font-medium">Contact Messages</p>
+              <p class="text-3xl font-bold text-gray-900 mt-2">18</p>
+              <p class="text-orange-600 text-sm mt-2">5 unread</p>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-envelope text-orange-600 text-xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team Members -->
+        <div class="stat-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-600 text-sm font-medium">Team Members</p>
+              <p class="text-3xl font-bold text-gray-900 mt-2">12</p>
+              <p class="text-gray-500 text-sm mt-2">Active members</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-users text-green-600 text-xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Recent Projects -->
+        <div class="lg:col-span-2 stat-card">
+          <h2 class="text-lg font-bold text-gray-900 mb-4">Recent Projects</h2>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4 pb-4 border-b border-gray-100">
+              <img
+                src="https://images.unsplash.com/photo-1555099962-4199f1a6a5ff?w=60&h=60&fit=crop"
+                alt="Project"
+                class="w-12 h-12 rounded-lg object-cover"
+              />
+              <div class="flex-1">
+                <h3 class="font-semibold text-gray-900">E-Commerce Platform</h3>
+                <p class="text-sm text-gray-600">Completed 2 days ago</p>
+              </div>
+              <span class="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium"
+                >Complete</span
+              >
+            </div>
+
+            <div class="flex items-center gap-4 pb-4 border-b border-gray-100">
+              <img
+                src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=60&h=60&fit=crop"
+                alt="Project"
+                class="w-12 h-12 rounded-lg object-cover"
+              />
+              <div class="flex-1">
+                <h3 class="font-semibold text-gray-900">Analytics Dashboard</h3>
+                <p class="text-sm text-gray-600">In progress</p>
+              </div>
+              <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-medium"
+                >In Progress</span
+              >
+            </div>
+
+            <div class="flex items-center gap-4">
+              <img
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=60&h=60&fit=crop"
+                alt="Project"
+                class="w-12 h-12 rounded-lg object-cover"
+              />
+              <div class="flex-1">
+                <h3 class="font-semibold text-gray-900">Mobile App</h3>
+                <p class="text-sm text-gray-600">Pending approval</p>
+              </div>
+              <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full font-medium"
+                >Pending</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stat-card">
+          <h2 class="text-lg font-bold text-gray-900 mb-4">Quick Stats</h2>
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between mb-2">
+                <span class="text-sm text-gray-600">Portfolio Completion</span>
+                <span class="text-sm font-semibold text-gray-900">85%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-indigo-600 h-2 rounded-full" style="width: 85%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-2">
+                <span class="text-sm text-gray-600">Team Productivity</span>
+                <span class="text-sm font-semibold text-gray-900">92%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-green-600 h-2 rounded-full" style="width: 92%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-2">
+                <span class="text-sm text-gray-600">Client Satisfaction</span>
+                <span class="text-sm font-semibold text-gray-900">98%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-orange-600 h-2 rounded-full" style="width: 98%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  </div>
+</main>

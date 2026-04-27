@@ -9,6 +9,7 @@ import { Projects } from './features/public/projects/projects';
 import { Portfolio } from './features/public/portfolio/portfolio';
 import { Contact } from './features/public/contact/contact';
 import { NotFound } from './features/public/not-found/not-found';
+import { HireUs } from './features/hire-us/hire-us';
 
 export const routes: Routes = [
     {
@@ -16,7 +17,7 @@ export const routes: Routes = [
             {
                 path: '', component: Home
             },
-            {path: 'home', redirectTo: '', pathMatch: 'full'},
+            { path: 'home', redirectTo: '', pathMatch: 'full' },
             {
                 path: 'about', component: About
             },
@@ -31,6 +32,9 @@ export const routes: Routes = [
             },
             {
                 path: 'contact', component: Contact
+            },
+            {
+                path: 'hire-us', component: HireUs
             }
         ]
     },

@@ -1,0 +1,72 @@
+<header class="bg-white/80 backdrop-blur-md border-b border-border sticky top-0 z-40">
+  <div class="flex items-center justify-between px-8 py-4">
+    <div class="flex-1 max-w-md">
+      <div class="relative group">
+        <i
+          class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-secondary transition-colors"
+        ></i>
+        <input
+          type="text"
+          placeholder="Search analytics or projects..."
+          class="input-field pl-10 bg-slate-50 focus:bg-white"
+        />
+      </div>
+    </div>
+
+    <div class="flex items-center gap-6">
+      <button
+        class="relative text-slate-500 hover:text-secondary transition-colors p-2 rounded-full hover:bg-slate-100"
+      >
+        <i class="fas fa-bell text-xl"></i>
+        <span
+          class="absolute top-2 right-2 w-2.5 h-2.5 bg-accent border-2 border-white rounded-full"
+        ></span>
+      </button>
+
+      <div class="w-px h-6 bg-border"></div>
+
+      <div class="relative group">
+        <button
+          class="flex items-center gap-3 hover:bg-slate-50 px-3 py-1.5 rounded-xl transition-all border border-transparent hover:border-border"
+        >
+          <img
+            src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin"
+            alt="Admin"
+            class="w-9 h-9 rounded-full bg-slate-200 border border-border"
+          />
+          <div class="text-left hidden md:block">
+            <p class="text-sm font-bold text-primary leading-none mb-1">Admin User</p>
+            <p class="text-[10px] text-slate-400 font-medium uppercase">Super Admin</p>
+          </div>
+          <i class="fas fa-chevron-down text-slate-400 text-[10px]"></i>
+        </button>
+
+        <div
+          class="absolute right-0 mt-2 w-56 bg-white border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-[60]"
+        >
+          <div class="p-2">
+            <a
+              href="#"
+              class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+            >
+              <i class="fas fa-user-circle w-4"></i> Profile Settings
+            </a>
+            <a
+              href="#"
+              class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+            >
+              <i class="fas fa-shield-halved w-4"></i> Security
+            </a>
+            <hr class="my-2 border-border" />
+            <button
+              (click)="logout()"
+              class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors font-bold"
+            >
+              <i class="fas fa-power-off w-4"></i> Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,1 +1,78 @@
-<p>projects works!</p>
+<section class="bg-primary py-20 text-center relative overflow-hidden">
+  <div class="custom-container mx-auto px-4 relative z-10">
+    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 animate-fade-in">Our Projects</h1>
+    <p class="text-slate-300 text-lg max-w-2xl mx-auto">Successful implementations across industries, delivering measurable value to our partners.</p>
+  </div>
+  <div class="absolute top-0 right-0 w-64 h-64 bg-secondary opacity-10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+</section>
+
+<section class="py-20 bg-[#F8FAFC]">
+  <div class="custom-container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (project of projects; track project.title; let i = $index) {
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group border border-slate-100 flex flex-col h-full animate-fade-in-up" [style.animation-delay]="i * 100 + 'ms'">
+          
+          <div class="h-52 relative overflow-hidden">
+            <div [style.background]="project.gradient" class="w-full h-full transform group-hover:scale-105 transition-transform duration-500"></div>
+            <div class="absolute top-4 left-4">
+              <span class="bg-white/90 backdrop-blur text-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                {{ project.tag }}
+              </span>
+            </div>
+          </div>
+
+          <div class="p-8 flex flex-col flex-grow">
+            <h3 class="text-xl font-bold text-primary mb-3 group-hover:text-secondary transition-colors">{{ project.title }}</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-3 italic">"{{ project.description }}"</p>
+            
+            <div class="flex items-center gap-4 text-xs text-slate-400 mb-6 border-b border-slate-50 pb-4">
+              <span class="flex items-center gap-1"><i class="fas fa-clock text-secondary"></i> {{ project.duration }}</span>
+              <span class="flex items-center gap-1"><i class="fas fa-users text-secondary"></i> {{ project.teamSize }}</span>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-8">
+              @for (tech of project.techStack; track tech) {
+                <span class="bg-slate-50 text-slate-500 text-[10px] font-bold px-2 py-1 rounded border border-slate-100">
+                  {{ tech }}
+                </span>
+              }
+            </div>
+
+            <div class="mt-auto">
+              <a href="#" class="inline-flex items-center text-secondary font-bold text-sm hover:gap-2 transition-all">
+                View Case Study <span class="ml-1 text-lg">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-white">
+  <div class="custom-container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center text-primary mb-16">Results We Deliver</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      @for (result of results; track result.title) {
+        <div class="p-8 bg-[#F8FAFC] rounded-xl border border-slate-100 text-center hover:border-secondary transition-all group">
+          <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:bg-secondary group-hover:text-white transition-all text-secondary text-2xl">
+            <i [class]="'fas ' + result.icon"></i>
+          </div>
+          <h4 class="text-lg font-bold text-primary mb-2">{{ result.title }}</h4>
+          <p class="text-sm text-slate-500 leading-relaxed">{{ result.desc }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-secondary relative overflow-hidden">
+  <div class="custom-container mx-auto px-4 text-center relative z-10">
+    <h2 class="text-3xl font-bold text-white mb-4">Inspired? Let's Talk About Your Project</h2>
+    <p class="text-white/80 mb-10">See how we can build something amazing for your business</p>
+    <a href="/contact" class="inline-block bg-primary text-white px-10 py-4 rounded-lg font-bold text-lg hover:shadow-2xl transition-all active:scale-95">
+      Start Your Project
+    </a>
+  </div>
+</section>

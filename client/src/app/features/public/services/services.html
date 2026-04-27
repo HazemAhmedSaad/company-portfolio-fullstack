@@ -1,1 +1,106 @@
-<p>services works!</p>
+<section class="bg-slate-900 py-24 relative overflow-hidden">
+  <div class="custom-container mx-auto px-4 text-center">
+    <span class="text-secondary font-bold tracking-widest uppercase text-sm mb-4 block"
+      >Expertise</span
+    >
+    <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">Our Services</h1>
+    <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+      Comprehensive solutions tailored to your business needs, from concept to scale.
+    </p>
+  </div>
+  <div
+    class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"
+  ></div>
+</section>
+
+<section class="py-24 bg-white">
+  <div class="custom-container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      @for (service of services; track service.id) {
+        <div
+          class="group p-10 rounded-3xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
+        >
+          <div
+            class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center text-2xl mb-8 group-hover:bg-secondary transition-colors"
+          >
+            <div class="service-icon-large">
+              <i [class]="'fas ' + service.icon"></i>
+            </div>
+          </div>
+          <h3 class="text-2xl font-bold text-primary mb-4">{{ service.title }}</h3>
+          <p class="text-slate-600 mb-8 leading-relaxed">{{ service.description }}</p>
+
+          <div class="space-y-3 mb-10">
+            <h4 class="text-sm font-bold text-slate-400 uppercase tracking-tight">
+              Key Capabilities:
+            </h4>
+            @for (feature of service.features; track feature) {
+              <div class="flex items-center gap-3 text-slate-700">
+                <i class="fas fa-check-circle text-secondary text-sm"></i>
+                <span class="text-sm font-medium">{{ feature }}</span>
+              </div>
+            }
+          </div>
+
+          <a
+            href="/contact"
+            class="inline-flex items-center gap-2 font-bold text-primary group-hover:text-secondary transition-colors"
+          >
+            Get Started <i class="fas fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+<!-- Services Grid -->
+
+<section class="py-24 bg-primary text-white overflow-hidden">
+  <div class="custom-container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-20">Our Development Process</h2>
+
+    <div class="relative">
+      <div class="hidden lg:block absolute top-12 left-0 w-full h-0.5 bg-white/10"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 relative z-10">
+        @for (step of processSteps; track step.num) {
+          <div class="text-center group">
+            <div
+              class="w-24 h-24 bg-slate-800 border-4 border-primary rounded-full flex items-center justify-center mx-auto mb-6 relative bg-white group-hover:scale-110 transition-transform duration-300"
+            >
+              <span class="text-primary font-black text-2xl">{{ step.num }}</span>
+            </div>
+            <h3 class="font-bold mb-3 text-lg">{{ step.title }}</h3>
+            <p class="text-slate-400 text-sm leading-relaxed px-4">{{ step.desc }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-24 bg-slate-50">
+  <div class="custom-container mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold text-primary mb-16">Technologies We Use</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+      @for (cat of techStack; track cat.category) {
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+          <h4 class="text-secondary font-bold mb-6 flex items-center gap-2">
+            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+            {{ cat.category }}
+          </h4>
+          <div class="flex flex-wrap gap-2">
+            @for (t of cat.techs; track t) {
+              <span
+                class="px-4 py-2 bg-slate-50 text-slate-600 rounded-lg text-sm font-semibold border border-slate-100 hover:border-secondary transition-colors cursor-default"
+              >
+                {{ t }}
+              </span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
