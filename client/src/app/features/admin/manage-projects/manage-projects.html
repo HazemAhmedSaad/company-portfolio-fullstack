@@ -1,1 +1,140 @@
-<p>manage-projects works!</p>
+<section id="projects" class="p-6 animate-fade-in">
+  <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-black text-slate-900 tracking-tight">Portfolio Projects</h1>
+      <p class="text-slate-500 mt-1">Manage and showcase your best work to clients.</p>
+    </div>
+
+    <button (click)="openModal()" class="btn btn-primary shadow-lg shadow-indigo-200 group">
+      <i class="fas fa-plus-circle mr-2 transition-transform group-hover:rotate-90"></i> 
+      New Project
+    </button>
+  </div>
+
+  <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-slate-50/50 border-b border-slate-100">
+            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Project Info</th>
+            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Client</th>
+            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Tech Stack</th>
+            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Status</th>
+            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-slate-50">
+          @for (project of projects; track project.id) {
+            <tr class="hover:bg-slate-50/80 transition-colors group">
+              <td class="px-8 py-5">
+                <div class="flex items-center gap-4">
+                  <img [src]="project.image" class="w-12 h-12 rounded-2xl object-cover shadow-sm ring-2 ring-white group-hover:scale-110 transition-transform">
+                  <div>
+                    <p class="font-bold text-slate-800 leading-none mb-1">{{ project.title }}</p>
+                    <p class="text-xs text-slate-400 font-medium tracking-tight">{{ project.url }}</p>
+                  </div>
+                </div>
+              </td>
+
+              <td class="px-8 py-5 text-sm font-semibold text-slate-600">
+                {{ project.client }}
+              </td>
+
+              <td class="px-8 py-5">
+                <div class="flex flex-wrap gap-1.5 max-w-[200px]">
+                  @for (tech of project.techStack; track tech) {
+                    <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider border border-indigo-100/50">
+                      {{ tech }}
+                    </span>
+                  }
+                </div>
+              </td>
+
+              <td class="px-8 py-5">
+                <span [ngClass]="getStatusClass(project.status)" class="font-black uppercase tracking-tighter italic">
+                  {{ project.status }}
+                </span>
+              </td>
+
+              <td class="px-8 py-5 text-right">
+                <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button (click)="openModal(project)" class="p-2 text-slate-400 hover:text-indigo-600 transition-colors">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button (click)="deleteProject(project.id)" class="p-2 text-slate-400 hover:text-red-500 transition-colors">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div *ngIf="projects.length === 0" class="p-20 text-center">
+        <div class="text-slate-300 mb-4 text-5xl"><i class="fas fa-folder-open"></i></div>
+        <p class="text-slate-400 font-medium">No projects added yet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div *ngIf="isModalOpen" 
+     class="fixed inset-0 scroll-auto z-100000  flex items-center justify-center bg-slate-900/60 backdrop-blur-sm animate-fade-in"
+     (click)="closeModal()">
+
+  <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden transform animate-scale-up"
+       (click)="$event.stopPropagation()">
+    
+    <div class="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
+      <h2 class="text-xl font-black text-slate-800">
+        {{ isEditMode ? 'Edit Project' : 'Add New Project' }}
+      </h2>
+      <button (click)="closeModal()" class="text-slate-400 hover:text-red-500 transition-colors">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <form (ngSubmit)="submitProject()" class="p-8 space-y-4" >
+      <div class="space-y-1">
+        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Title</label>
+        <input type="text" name="title" [(ngModel)]="currentProject.title" class="input-modern" placeholder="e.g. Finance Dashboard" required>
+      </div>
+
+      <div class="space-y-1">
+        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Client Name</label>
+        <input type="text" name="client" [(ngModel)]="currentProject.client" class="input-modern" placeholder="Company name" required>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-1">
+          <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Status</label>
+          <select name="status" [(ngModel)]="currentProject.status" class="select-modern">
+            <option>Completed</option>
+            <option>In Progress</option>
+            <option>Review</option>
+          </select>
+        </div>
+        <div class="space-y-1">
+          <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Live URL</label>
+          <input type="text" name="url" [(ngModel)]="currentProject.url" class="input-modern" placeholder="https://...">
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Tech Stack (comma separated)</label>
+        <input type="text" name="techStack" [(ngModel)]="currentProject.techStack" class="input-modern" placeholder="React, Tailwind, Node">
+      </div>
+
+      <div class="flex gap-3 pt-6">
+        <button type="button" (click)="closeModal()" class="flex-1 py-4 font-bold text-slate-500 bg-slate-100 rounded-2xl hover:bg-slate-200 transition-colors">
+          Cancel
+        </button>
+        <button type="submit" class="flex-1 py-4 font-bold text-white bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all">
+          {{ isEditMode ? 'Save Changes' : 'Confirm Add' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

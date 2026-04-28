@@ -1,1 +1,100 @@
-<p>manage-messages works!</p>
+<section id="messages" class="p-6 animate-fade-in">
+  <div class="mb-10">
+    <h1 class="text-3xl font-black text-slate-900">Inbound Messages</h1>
+    <p class="text-slate-500 mt-1">
+      You have {{ messages.length }} conversations
+    </p>
+  </div>
+
+  <div class="grid gap-6">
+    @for (msg of messages; track msg.id) {
+      <div
+        class="bg-white p-6 rounded-2xl border-l-4 shadow-sm"
+        [ngClass]="borderClasses[msg.status]">
+
+        <!-- header -->
+        <div class="flex justify-between mb-4">
+          <div class="flex items-center gap-3">
+
+            <img [src]="msg.avatar" class="w-12 h-12 rounded-xl">
+
+            <div>
+              <div class="flex items-center gap-2">
+
+                <h3 class="font-bold">{{ msg.name }}</h3>
+
+                <span
+                  class="text-xs px-2 py-1 rounded"
+                  [ngClass]="statusClasses[msg.status]">
+                  {{ msg.status }}
+                </span>
+
+                <!-- 🔥 change status -->
+                <select [(ngModel)]="msg.status" class="text-xs border rounded px-2 py-1">
+                  <option>New</option>
+                  <option>Read</option>
+                  <option>Replied</option>
+                </select>
+
+              </div>
+
+              <p class="text-xs text-gray-400">{{ msg.email }}</p>
+            </div>
+          </div>
+
+          <!-- actions -->
+          <div class="flex gap-2">
+            <button (click)="openReplyModal(msg)" class="text-indigo-600">
+              Reply
+            </button>
+
+            <button (click)="deleteMessage(msg.id)" class="text-red-500">
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <!-- message -->
+        <p class="text-gray-600 text-sm italic">
+          "{{ msg.content }}"
+        </p>
+
+      </div>
+    }
+
+    @if (messages.length === 0) {
+      <p class="text-center text-gray-400">No messages</p>
+    }
+  </div>
+</section>
+
+<!-- 🔥 REPLY MODAL -->
+<div *ngIf="isReplyModalOpen"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center"
+     (click)="closeReplyModal()">
+
+  <div class="bg-white p-6 rounded-xl w-full max-w-md"
+       (click)="$event.stopPropagation()">
+
+    <h2 class="font-bold mb-4">
+      Reply to {{ selectedMessage?.name }}
+    </h2>
+
+    <textarea
+      [(ngModel)]="replyText"
+      class="w-full border p-2 mb-4"
+      placeholder="Write your reply...">
+    </textarea>
+
+    <div class="flex justify-end gap-2">
+      <button (click)="closeReplyModal()">
+        Cancel
+      </button>
+
+      <button (click)="sendReply()" class="btn btn-primary">
+        Send
+      </button>
+    </div>
+
+  </div>
+</div>

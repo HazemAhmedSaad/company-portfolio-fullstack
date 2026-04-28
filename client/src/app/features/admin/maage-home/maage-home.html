@@ -1,0 +1,140 @@
+<section id="home" class="fade-in">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-primary tracking-tight">Home Page Content</h1>
+    <p class="text-slate-500 mt-2">Manage your homepage hero section and call-to-action buttons.</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+    <div class="xl:col-span-2 stat-card shadow-lg border-none">
+      <form (ngSubmit)="onSave()" class="space-y-6">
+        <div>
+          <label class="block text-sm font-bold text-primary mb-2 uppercase tracking-wide"
+            >Hero Headline</label
+          >
+          <input
+            type="text"
+            [(ngModel)]="heroData.headline"
+            name="headline"
+            class="input-field"
+            placeholder="Enter headline"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold text-primary mb-2 uppercase tracking-wide"
+            >Subheadline</label
+          >
+          <textarea
+            [(ngModel)]="heroData.subheadline"
+            name="subheadline"
+            class="input-field h-32 resize-none"
+            placeholder="Enter subheadline"
+          ></textarea>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-slate-50 rounded-xl border border-slate-100"
+        >
+          <div class="space-y-4">
+            <h3 class="text-xs font-black text-secondary uppercase tracking-widest">
+              Primary Button
+            </h3>
+            <input
+              type="text"
+              [(ngModel)]="heroData.primaryBtnText"
+              name="pBtnText"
+              class="input-field bg-white"
+              placeholder="Text"
+            />
+            <input
+              type="text"
+              [(ngModel)]="heroData.primaryBtnLink"
+              name="pBtnLink"
+              class="input-field bg-white"
+              placeholder="Link"
+            />
+          </div>
+
+          <div
+            class="space-y-4 border-t md:border-t-0 md:border-l border-slate-200 md:pl-6 pt-4 md:pt-0"
+          >
+            <h3 class="text-xs font-black text-accent uppercase tracking-widest">
+              Secondary Button
+            </h3>
+            <input
+              type="text"
+              [(ngModel)]="heroData.secondaryBtnText"
+              name="sBtnText"
+              class="input-field bg-white"
+              placeholder="Text"
+            />
+            <input
+              type="text"
+              [(ngModel)]="heroData.secondaryBtnLink"
+              name="sBtnLink"
+              class="input-field bg-white"
+              placeholder="Link"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold text-primary mb-2 uppercase tracking-wide"
+            >Hero Image</label
+          >
+          <div class="relative group">
+            <input
+              type="file"
+              (change)="onImageUpload($event)"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+            />
+            <div
+              class="border-2 border-dashed border-slate-200 rounded-xl p-10 text-center group-hover:border-secondary group-hover:bg-secondary/5 transition-all duration-300"
+            >
+              <div
+                class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform"
+              >
+                <i
+                  class="fas fa-cloud-arrow-up text-slate-400 group-hover:text-secondary text-2xl"
+                ></i>
+              </div>
+              <p class="text-slate-600 font-bold">Click to upload or drag and drop</p>
+              <p class="text-slate-400 text-xs mt-1 uppercase">PNG, JPG up to 10MB</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-4 pt-6 border-t border-slate-100">
+          <button type="submit" class="btn btn-primary btn-md">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+          <button type="reset" class="btn btn-secondary btn-md">
+            <i class="fas fa-rotate-left"></i> Reset to Default
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="space-y-6">
+      <div class="stat-card border-none bg-primary text-white overflow-hidden relative">
+        <div class="absolute top-0 right-0 p-3">
+          <span class="px-2 py-1 bg-accent text-[10px] font-bold rounded uppercase"
+            >Live Preview</span
+          >
+        </div>
+        <h3 class="text-xs font-bold text-slate-400 uppercase mb-4 tracking-widest">Preview Tip</h3>
+        <p class="text-sm leading-relaxed opacity-80">
+          This content will appear at the very top of your landing page. Make sure the headline is
+          catchy and the image is high resolution.
+        </p>
+        <div class="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
+          <h4 class="text-sm font-bold mb-2">{{ heroData.headline }}</h4>
+          <div class="flex gap-2">
+            <div class="w-12 h-1 bg-secondary rounded"></div>
+            <div class="w-4 h-1 bg-accent rounded"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
