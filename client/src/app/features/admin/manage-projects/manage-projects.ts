@@ -1,94 +1,152 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ProjectService } from '../../../core/services/projects/project-service';
+import { IProject } from '../../../core/models/project.model';
+
 
 @Component({
   selector: 'app-manage-projects',
-  imports: [FormsModule, CommonModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './manage-projects.html',
   styleUrl: './manage-projects.css',
 })
-export class ManageProjects {
-  projects: any[] = [];
+export class ManageProjects implements OnInit {
+  private fb = inject(FormBuilder);
+  private projectService = inject(ProjectService);
+  private cdr = inject(ChangeDetectorRef);
 
+  projects: IProject[] = [];
+  projectForm!: FormGroup;
   isModalOpen = false;
   isEditMode = false;
+  selectedFile: File | null = null;
+  currentProjectId: string | null = null;
 
-  currentProject: any = {
-    title: '',
-    client: '',
-    url: '',
-    techStack: '',
-    status: 'Completed'
-  };
+  ngOnInit() {
+    this.loadProjects();
+    console.log(this.loadProjects());
 
-  openModal(project?: any) {
+    this.initForm();
+  }
+
+  initForm() {
+    this.projectForm = this.fb.group({
+      title: ['', [Validators.required]],
+      clientName: ['', [Validators.required]],
+      link: ['', [Validators.required]],
+      technologies: ['', [Validators.required]], // هندخلهم كـ string ونحولهم array
+      status: ['Completed', [Validators.required]],
+      description: ['', [Validators.required]],
+      image: [null] // في حالة الرفع
+    });
+  }
+
+  loadProjects() {
+    this.projectService.getProjects().subscribe({
+      next: (data: any) => (this.projects = data.data
+        , this.cdr.detectChanges()
+      )
+      ,
+      error: (err) => console.error('Error loading projects', err)
+    });
+  }
+
+  openModal(project?: IProject) {
+    this.isModalOpen = true;
     if (project) {
       this.isEditMode = true;
-      this.currentProject = {
-        ...project,
-        techStack: project.techStack.join(', ')
-      };
+      this.currentProjectId = project._id;
+      // ملء الفورم ببيانات المشروع للتعديل
+      this.projectForm.patchValue({
+        title: project.title,
+        clientName: project.clientName,
+        link: project.link,
+        technologies: project.technologies.join(', '),
+        status: project.status,
+        description: project.description
+      });
     } else {
       this.isEditMode = false;
-      this.currentProject = {
-        title: '',
-        client: '',
-        url: '',
-        techStack: '',
-        status: 'Completed'
-      };
+      this.currentProjectId = null;
+      this.projectForm.reset({ status: 'Completed' });
     }
-
-    this.isModalOpen = true;
   }
 
   closeModal() {
     this.isModalOpen = false;
+    this.projectForm.reset();
+  }
+
+  // التقاط ملف الصورة عند اختياره
+  onFileSelected(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+    }
   }
 
   submitProject() {
-    const techArray = this.currentProject.techStack
-      ? this.currentProject.techStack.split(',').map((t: string) => t.trim())
-      : [];
+    const formValues = this.projectForm.value;
+    const formData = new FormData();
 
-    if (this.isEditMode) {
-      const index = this.projects.findIndex(p => p.id === this.currentProject.id);
-      if (index !== -1) {
-        this.projects[index] = {
-          ...this.currentProject,
-          techStack: techArray
-        };
-      }
+    // ... (تجهيز الـ formData زي ما هو) ...
+    formData.append('title', formValues.title);
+    formData.append('clientName', formValues.clientName);
+    formData.append('link', formValues.link);
+    formData.append('description', formValues.description);
+    formData.append('status', formValues.status);
+
+    const techArray = formValues.technologies.split(',').map((t: string) => t.trim());
+    techArray.forEach((tech: string) => formData.append('technologies', tech));
+
+    if (this.selectedFile) {
+      formData.append('images', this.selectedFile);
+    }
+
+    if (this.isEditMode && this.currentProjectId) {
+      this.projectService.updateProject(this.currentProjectId, formData).subscribe({
+        next: (res: any) => {
+          // تحديث العنصر في المصفوفة فوراً بدون Refresh
+          const index = this.projects.findIndex(p => p._id === this.currentProjectId);
+          if (index !== -1) {
+            this.projects[index] = res.data; // نفترض أن الـ API يرجع المشروع المعدل في data
+            this.projects = [...this.projects]; // عمل Spread لضمان تحسس Angular للتغيير
+          }
+          this.closeModal();
+        },
+        error: (err) => console.error(err)
+      });
     } else {
-      const newId = this.projects.length + 1;
-
-      this.projects.push({
-        ...this.currentProject,
-        id: newId,
-        techStack: techArray,
-        image: 'https://via.placeholder.com/150'
+      this.projectService.addProject(formData).subscribe({
+        next: (res: any) => {
+          // إضافة المشروع الجديد للمصفوفة فوراً
+          this.projects = [res.data, ...this.projects];
+          this.closeModal();
+        },
+        error: (err) => console.error(err)
       });
     }
-
-    this.closeModal();
   }
-  getStatusClass(status: string) {
-    switch (status) {
-      case 'Completed':
-        return 'bg-green-100 text-green-600 px-2 py-1 rounded-full text-xs';
-
-      case 'In Progress':
-        return 'bg-yellow-100 text-yellow-600 px-2 py-1 rounded-full text-xs';
-
-      case 'Review':
-        return 'bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs';
-
-      default:
-        return 'bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs';
+  deleteProject(id: string) {
+    if (confirm('Are you sure you want to delete this project?')) {
+      this.projectService.deleteProject(id).subscribe({
+        next: (res: any) => {
+          this.projects = this.projects.filter(p => p._id !== id);
+          this.cdr.detectChanges();
+        }
+        ,
+        error: (err) => console.error(err)
+      },)
     }
   }
-  deleteProject(id: number) {
-    this.projects = this.projects.filter(p => p.id !== id);
+
+  getStatusClass(status: string) {
+    switch (status) {
+      case 'Completed': return 'bg-green-100 text-green-600 px-2 py-1 rounded-full text-xs';
+      case 'In Progress': return 'bg-yellow-100 text-yellow-600 px-2 py-1 rounded-full text-xs';
+      case 'Review': return 'bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs';
+      default: return 'bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs';
+    }
   }
 }

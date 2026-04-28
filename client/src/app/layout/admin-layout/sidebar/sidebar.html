@@ -1,35 +1,39 @@
-  
-  <aside class="w-64 bg-white border-r border-border fixed h-screen overflow-y-auto z-40">
-    <div class="p-6 border-b border-border">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center shadow-md">
-          <i class="fas fa-cube text-white text-lg"></i>
-        </div>
-        <div>
-          <h1 class="font-bold text-primary text-sm tracking-tight">TechVision</h1>
-          <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Admin Panel</p>
-        </div>
+<aside class="w-64 bg-white border-r border-border fixed h-screen overflow-y-auto ">
+  <div class="p-6 border-b border-border">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center shadow-md"
+      >
+        <i class="fas fa-cube text-white text-lg"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-primary text-sm tracking-tight">TechVision</h1>
+        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Admin Panel</p>
       </div>
     </div>
+  </div>
 
-    <nav class="p-4 space-y-1">
-      @for (item of menuItems; track item.path) {
-        <a [routerLink]="item.path" 
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{exact: true}"
-           class="sidebar-link group flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 font-medium transition-all hover:bg-slate-50">
-          <i [class]="'fas ' + item.icon + ' w-5 text-slate-400 group-hover:text-secondary'"></i>
-          <span>{{ item.label }}</span>
-        </a>
-      }
-    </nav>
+  <nav class="p-4 space-y-1">
+    @for (item of menuItems; track item.path) {
+      <a
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="sidebar-link group flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 font-medium transition-all hover:bg-slate-50"
+      >
+        <i [class]="'fas ' + item.icon + ' w-5 text-slate-400 group-hover:text-secondary'"></i>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  </nav>
 
-    <div class="absolute bottom-0 w-full p-4 border-t border-border bg-white">
-      <button (click)="logout()"
-        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 font-bold transition-all active:scale-95">
-        <i class="fas fa-sign-out-alt w-5"></i>
-        <span>Logout</span>
-      </button>
-    </div>
-  </aside>
-
+  <div class="absolute bottom-0 w-full p-4 border-t border-border bg-white">
+    <button
+      (click)="logout()"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 font-bold transition-all active:scale-95"
+    >
+      <i class="fas fa-sign-out-alt w-5"></i>
+      <span>Logout</span>
+    </button>
+  </div>
+</aside>

@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-maage-about',
-  imports: [FormsModule,CommonModule],
-  templateUrl: './maage-about.html',
-  styleUrl: './maage-about.css',
+  imports: [FormsModule, CommonModule],
+  templateUrl: './manage-about.html',
+  styleUrl: './manage-about.css',
 })
 export class MaageAbout {
   companyInfo = {
@@ -19,15 +19,14 @@ export class MaageAbout {
     experience: 6,
     clients: 150,
     projects: 300,
-    team: 50
+    team: 50,
   };
-
   teamMembers = [
     { id: 1, name: 'John Smith', role: 'CEO & Founder', avatar: 'team1' },
     { id: 2, name: 'Sarah Johnson', role: 'CTO', avatar: 'team2' },
     { id: 3, name: 'Mike Davis', role: 'Design Lead', avatar: 'team3' },
     { id: 4, name: 'Emily Brown', role: 'Project Manager', avatar: 'team4' }
-  ];
+  ]
 
   saveInfo() {
     console.log('Saving Info:', this.companyInfo);

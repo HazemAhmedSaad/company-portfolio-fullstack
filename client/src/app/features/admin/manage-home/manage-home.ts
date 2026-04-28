@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-maage-home',
+  selector: 'app-manage-home',
   imports: [FormsModule],
-  templateUrl: './maage-home.html',
-  styleUrl: './maage-home.css',
+  templateUrl: './manage-home.html',
+  styleUrl: './manage-home.css',
 })
 export class MaageHome {
   heroData = {
