@@ -116,7 +116,7 @@
   (click)="closeModal()"
 >
   <div
-    class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden transform animate-scale-up"
+    class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-2xl overflow-hidden transform animate-scale-up"
     (click)="$event.stopPropagation()"
   >
     <div class="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
@@ -129,41 +129,60 @@
     </div>
 
     <form [formGroup]="projectForm" (ngSubmit)="submitProject()" class="p-8 space-y-4">
-      <div class="space-y-1">
-        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
-          >Title</label
-        >
-        <input
-          type="text"
-          formControlName="title"
-          class="input-modern"
-          placeholder="e.g. Finance Dashboard"
-        />
-      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Title -->
+        <div class="space-y-1">
+          <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
+            >Title</label
+          >
+          <input
+            type="text"
+            formControlName="title"
+            class="input-modern"
+            [class.border-red-500]="isFieldInvalid('title')"
+            placeholder="e.g. Finance Dashboard"
+          />
+          <p *ngIf="isFieldInvalid('title')" class="text-[10px] text-red-500 px-1 italic">
+            Title is required (min 3 chars).
+          </p>
+        </div>
 
-      <div class="space-y-1">
-        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
-          >Client Name</label
-        >
-        <input
-          type="text"
-          formControlName="clientName"
-          class="input-modern"
-          placeholder="Company name"
-        />
+        <!-- Client Name -->
+        <div class="space-y-1">
+          <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
+            >Client Name</label
+          >
+          <input
+            type="text"
+            formControlName="clientName"
+            class="input-modern"
+            [class.border-red-500]="isFieldInvalid('clientName')"
+            placeholder="Company name"
+          />
+          <p *ngIf="isFieldInvalid('clientName')" class="text-[10px] text-red-500 px-1 italic">
+            Client name is required.
+          </p>
+        </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
+        <!-- Status -->
         <div class="space-y-1">
           <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
             >Status</label
           >
-          <select formControlName="status" class="select-modern">
+          <select
+            formControlName="status"
+            class="select-modern"
+            [class.border-red-500]="isFieldInvalid('status')"
+          >
             <option value="Completed">Completed</option>
             <option value="In Progress">In Progress</option>
             <option value="Review">Review</option>
           </select>
         </div>
+
+        <!-- Live URL -->
         <div class="space-y-1">
           <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
             >Live URL</label
@@ -172,34 +191,63 @@
             type="text"
             formControlName="link"
             class="input-modern"
+            [class.border-red-500]="isFieldInvalid('link')"
             placeholder="https://..."
+          />
+          <p *ngIf="isFieldInvalid('link')" class="text-[10px] text-red-500 px-1 italic">
+            Please enter a valid URL.
+          </p>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="space-y-1">
+        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
+          >Description</label
+        >
+        <textarea
+          formControlName="description"
+          class="input-modern"
+          [class.border-red-500]="isFieldInvalid('description')"
+          placeholder="Description..."
+        ></textarea>
+        <p *ngIf="isFieldInvalid('description')" class="text-[10px] text-red-500 px-1 italic">
+          Description must be at least 10 characters.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Technologies -->
+        <div class="space-y-1">
+          <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
+            >Technologies</label
+          >
+          <input
+            type="text"
+            formControlName="technologies"
+            class="input-modern"
+            [class.border-red-500]="isFieldInvalid('technologies')"
+            placeholder="React, Tailwind, Node"
+          />
+          <p *ngIf="isFieldInvalid('technologies')" class="text-[10px] text-red-500 px-1 italic">
+            At least one technology required.
+          </p>
+        </div>
+
+        <!-- Project Image -->
+        <div class="space-y-1">
+          <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
+            >Project Image</label
+          >
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            class="block w-full text-sm text-slate-500 ..."
           />
         </div>
       </div>
 
-      <div class="space-y-1">
-        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
-          >Technologies (comma separated)</label
-        >
-        <input
-          type="text"
-          formControlName="technologies"
-          class="input-modern"
-          placeholder="React, Tailwind, Node"
-        />
-      </div>
-
-      <div class="space-y-1">
-        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1"
-          >Project Image</label
-        >
-        <input
-          type="file"
-          (change)="onFileSelected($event)"
-          class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-        />
-      </div>
-
+      <!-- Buttons -->
       <div class="flex gap-3 pt-6">
         <button
           type="button"
@@ -210,7 +258,8 @@
         </button>
         <button
           type="submit"
-          class="flex-1 py-4 font-bold text-white bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all disabled:opacity-50"
+          [disabled]="projectForm.invalid"
+          class="flex-1 py-4 font-bold text-white bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {{ isEditMode ? 'Save Changes' : 'Confirm Add' }}
         </button>

@@ -1,4 +1,4 @@
-interface RootObject {
+interface IMember {
     _id: string;
     name: string;
     jobTitle: string;
@@ -6,4 +6,6 @@ interface RootObject {
     position: string[];
     email: string;
     image: string;
+    createdAt: string;
+    updatedAt: string;
 }

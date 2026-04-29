@@ -33,14 +33,19 @@ export class ManageProjects implements OnInit {
 
   initForm() {
     this.projectForm = this.fb.group({
-      title: ['', [Validators.required]],
+      title: ['', [Validators.required, Validators.minLength(3)]],
       clientName: ['', [Validators.required]],
       link: ['', [Validators.required]],
-      technologies: ['', [Validators.required]], // هندخلهم كـ string ونحولهم array
+      technologies: ['', [Validators.required]],
       status: ['Completed', [Validators.required]],
-      description: ['', [Validators.required]],
-      image: [null] // في حالة الرفع
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      image: [null]
     });
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.projectForm.get(fieldName);
+    return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
   loadProjects() {
@@ -58,7 +63,6 @@ export class ManageProjects implements OnInit {
     if (project) {
       this.isEditMode = true;
       this.currentProjectId = project._id;
-      // ملء الفورم ببيانات المشروع للتعديل
       this.projectForm.patchValue({
         title: project.title,
         clientName: project.clientName,
@@ -79,10 +83,10 @@ export class ManageProjects implements OnInit {
     this.projectForm.reset();
   }
 
-  // التقاط ملف الصورة عند اختياره
-  onFileSelected(event: any) {
-    if (event.target.files.length > 0) {
-      this.selectedFile = event.target.files[0];
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
     }
   }
 
@@ -90,7 +94,6 @@ export class ManageProjects implements OnInit {
     const formValues = this.projectForm.value;
     const formData = new FormData();
 
-    // ... (تجهيز الـ formData زي ما هو) ...
     formData.append('title', formValues.title);
     formData.append('clientName', formValues.clientName);
     formData.append('link', formValues.link);
@@ -107,11 +110,10 @@ export class ManageProjects implements OnInit {
     if (this.isEditMode && this.currentProjectId) {
       this.projectService.updateProject(this.currentProjectId, formData).subscribe({
         next: (res: any) => {
-          // تحديث العنصر في المصفوفة فوراً بدون Refresh
           const index = this.projects.findIndex(p => p._id === this.currentProjectId);
           if (index !== -1) {
-            this.projects[index] = res.data; // نفترض أن الـ API يرجع المشروع المعدل في data
-            this.projects = [...this.projects]; // عمل Spread لضمان تحسس Angular للتغيير
+            this.projects[index] = res.data;
+            this.projects = [...this.projects];
           }
           this.closeModal();
         },
@@ -120,7 +122,6 @@ export class ManageProjects implements OnInit {
     } else {
       this.projectService.addProject(formData).subscribe({
         next: (res: any) => {
-          // إضافة المشروع الجديد للمصفوفة فوراً
           this.projects = [res.data, ...this.projects];
           this.closeModal();
         },
@@ -129,17 +130,16 @@ export class ManageProjects implements OnInit {
     }
   }
   deleteProject(id: string) {
-    if (confirm('Are you sure you want to delete this project?')) {
-      this.projectService.deleteProject(id).subscribe({
-        next: (res: any) => {
-          this.projects = this.projects.filter(p => p._id !== id);
-          this.cdr.detectChanges();
-        }
-        ,
-        error: (err) => console.error(err)
-      },)
-    }
+    this.projectService.deleteProject(id).subscribe({
+      next: () => {
+        this.projects = this.projects.filter(p => p._id !== id);
+        this.cdr.detectChanges();
+      }
+      ,
+      error: (err) => console.error(err)
+    },)
   }
+
 
   getStatusClass(status: string) {
     switch (status) {

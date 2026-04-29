@@ -1,4 +1,4 @@
-interface RootObject {
+interface IMessage {
     _id: string;
     name: string;
     email: string;
@@ -10,4 +10,6 @@ interface RootObject {
     isRead: boolean;
     isAnswered: boolean;
     isSpam: boolean;
+    createdAt: string;
+    updatedAt: string;
 }
