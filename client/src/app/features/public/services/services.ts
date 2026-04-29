@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import IService from '../../../core/models/service.model';
+import { HttpClient } from '@angular/common/http';
+import { ServiceOfferService } from '../../../core/services/servicesOffers/service-offer-service';
 
 @Component({
   selector: 'app-services',
@@ -7,32 +10,23 @@ import { Component } from '@angular/core';
   styleUrl: './services.css',
 })
 export class Services {
+  services: IService[] = [];
+  private serviceOfferService = inject(ServiceOfferService);
+  private cdr = inject(ChangeDetectorRef);
+  ngOnInit() {
 
-  services = [
-    {
-      id: 'web-dev',
-      icon: 'fa-globe',
-      title: 'Web Development',
-      description: 'Custom web applications built with modern frameworks, scalable architecture, and best practices.',
-      features: ['React, Vue.js & Angular expertise', 'Progressive Web Apps (PWA)', 'RESTful & GraphQL APIs', 'SEO-optimized development']
-    },
-    {
-      id: 'mobile',
-      icon: 'fa-mobile-alt',
-      title: 'Mobile Applications',
-      description: 'Native and cross-platform mobile solutions for iOS and Android with seamless user experiences.',
-      features: ['Native iOS & Android development', 'React Native & Flutter apps', 'Mobile UI/UX design', 'Offline functionality']
-    },
-    {
-      id: 'ai',
-      icon: 'fa-brain',
-      title: 'AI & Machine Learning',
-      description: 'Intelligent systems powered by advanced ML models to automate processes and predict outcomes.',
-      features: ['Predictive analytics', 'Natural Language Processing', 'Computer vision solutions', 'Chatbot development']
-    }
-    // يمكنك إضافة باقي الخدمات هنا بنفس النمط...
-  ];
-
+    this.loadServices();
+    this.cdr.detectChanges();
+  }
+  loadServices() {
+    this.serviceOfferService.getServices().subscribe({
+      next: (res: any) => {
+        this.services = res.data || res;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error loading services:', err)
+    });
+  }
   processSteps = [
     { num: '01', title: 'Discovery', desc: 'Understanding goals and technical requirements.' },
     { num: '02', title: 'Planning', desc: 'Detailed roadmaps and architecture diagrams.' },
