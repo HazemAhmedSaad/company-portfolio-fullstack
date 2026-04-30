@@ -1,100 +1,160 @@
 <section id="messages" class="p-6 animate-fade-in">
-  <div class="mb-10">
-    <h1 class="text-3xl font-black text-slate-900">Inbound Messages</h1>
-    <p class="text-slate-500 mt-1">
-      You have {{ messages.length }} conversations
-    </p>
+  <div class="mb-10 flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-black text-slate-900">Inbound Messages</h1>
+      <p class="text-slate-500 mt-1">You have {{ messages.length }} conversations</p>
+    </div>
+    <button (click)="loadMessages()" class="p-2 bg-slate-100 rounded-full hover:bg-slate-200">
+      <i class="fas fa-sync-alt"></i>
+    </button>
   </div>
 
   <div class="grid gap-6">
-    @for (msg of messages; track msg.id) {
+    @for (msg of messages; track msg._id) {
       <div
-        class="bg-white p-6 rounded-2xl border-l-4 shadow-sm"
-        [ngClass]="borderClasses[msg.status]">
-
-        <!-- header -->
+        class="bg-white p-6 rounded-2xl border-l-4 shadow-sm transition-all"
+        [ngClass]="{
+          'border-l-indigo-500 bg-indigo-50/20': !msg.isRead,
+          'border-l-slate-200': msg.isRead,
+          'border-l-emerald-500': msg.isAnswered,
+        }"
+      >
+        <!-- Header -->
         <div class="flex justify-between mb-4">
           <div class="flex items-center gap-3">
-
-            <img [src]="msg.avatar" class="w-12 h-12 rounded-xl">
+            <!-- استخدام DiceBear كصورة بديلة لأن الموديل لا يحتوي على avatar -->
+            <img
+              [src]="'https://api.dicebear.com/7.x/avataaars/svg?seed=' + msg.name"
+              class="w-12 h-12 rounded-xl bg-slate-100"
+            />
 
             <div>
               <div class="flex items-center gap-2">
-
                 <h3 class="font-bold">{{ msg.name }}</h3>
 
+                <!-- عرض الحالة -->
                 <span
-                  class="text-xs px-2 py-1 rounded"
-                  [ngClass]="statusClasses[msg.status]">
-                  {{ msg.status }}
+                  class="text-[10px] px-2 py-0.5 rounded font-bold uppercase"
+                  [ngClass]="{
+                    'bg-indigo-100 text-indigo-700': !msg.isRead,
+                    'bg-slate-100 text-slate-600': msg.isRead,
+                  }"
+                >
+                  @if (msg.isRead) {
+                    READED
+                  } @else {
+                    NEW
+                  }
                 </span>
-
-                <!-- 🔥 change status -->
-                <select [(ngModel)]="msg.status" class="text-xs border rounded px-2 py-1">
-                  <option>New</option>
-                  <option>Read</option>
-                  <option>Replied</option>
-                </select>
-
+                <span
+                  *ngIf="msg.isAnswered"
+                  class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-0.5 rounded font-bold uppercase"
+                >
+                  REPLIED
+                </span>
+                <span
+                  *ngIf="msg.isSpam"
+                  class="bg-red-100 text-red-600 text-[10px] px-2 py-0.5 rounded font-bold uppercase"
+                >
+                  SPAM
+                </span>
               </div>
-
-              <p class="text-xs text-gray-400">{{ msg.email }}</p>
+              <p class="text-xs text-gray-400">{{ msg.email }} | {{ msg.phone }}</p>
             </div>
           </div>
 
-          <!-- actions -->
-          <div class="flex gap-2">
-            <button (click)="openReplyModal(msg)" class="text-indigo-600">
-              Reply
-            </button>
+          <!-- Actions -->
+          <div class="flex gap-4 items-center">
+            <p class="text-[10px] text-gray-400 font-mono">{{ msg.createdAt | date: 'short' }}</p>
 
-            <button (click)="deleteMessage(msg.id)" class="text-red-500">
-              Delete
-            </button>
+            <div class="flex gap-2">
+              <button
+                (click)="openReplyModal(msg)"
+                class="text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg transition-colors"
+              >
+                <i class="fas fa-reply mr-1"></i> Reply
+              </button>
+
+              <button
+                (click)="updateStatus(msg, 'read')"
+                [class.text-green-500]="msg.isRead"
+                class="text-gray-400 p-2 hover:bg-gray-50 rounded-lg"
+              >
+                <i class="fas fa-eye"></i>
+              </button>
+              <button
+                (click)="updateStatus(msg, 'spam')"
+                [class.text-red-500]="msg.isSpam"
+                class="text-gray-400 p-2 hover:bg-red-50 rounded-lg"
+              >
+                <i class="fas fa-exclamation-triangle"></i>
+              </button>
+
+              <button
+                (click)="deleteMessage(msg._id)"
+                class="text-slate-300 hover:text-red-500 p-2 transition-colors"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- message -->
-        <p class="text-gray-600 text-sm italic">
-          "{{ msg.content }}"
-        </p>
-
+        <!-- Message Body -->
+        <div class="bg-slate-50/50 p-4 rounded-xl">
+          <h4 class="text-xs font-bold text-slate-400 uppercase mb-1">
+            Subject: {{ msg.subject }}
+          </h4>
+          <p class="text-gray-600 text-sm leading-relaxed">"{{ msg.message }}"</p>
+        </div>
       </div>
     }
 
     @if (messages.length === 0) {
-      <p class="text-center text-gray-400">No messages</p>
+      <div class="text-center py-20 bg-white rounded-3xl border-2 border-dashed">
+        <p class="text-gray-400">No inbound messages found.</p>
+      </div>
     }
   </div>
 </section>
 
-<!-- 🔥 REPLY MODAL -->
-<div *ngIf="isReplyModalOpen"
-     class="fixed inset-0 bg-black/50 flex items-center justify-center"
-     (click)="closeReplyModal()">
-
-  <div class="bg-white p-6 rounded-xl w-full max-w-md"
-       (click)="$event.stopPropagation()">
-
-    <h2 class="font-bold mb-4">
-      Reply to {{ selectedMessage?.name }}
-    </h2>
+<!-- REPLY MODAL -->
+<div
+  *ngIf="isReplyModalOpen"
+  class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4"
+  (click)="closeReplyModal()"
+>
+  <div
+    class="bg-white p-8 rounded-[2rem] w-full max-w-lg shadow-2xl transform animate-scale-up"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="mb-6">
+      <h2 class="text-2xl font-black text-slate-800">Reply to Message</h2>
+      <p class="text-slate-500">Recipient: {{ selectedMessage?.email }}</p>
+    </div>
 
     <textarea
       [(ngModel)]="replyText"
-      class="w-full border p-2 mb-4"
-      placeholder="Write your reply...">
+      class="w-full border-2 border-slate-100 rounded-2xl p-4 mb-6 focus:border-indigo-500 outline-none transition-all min-h-[200px]"
+      placeholder="Type your official response here..."
+    >
     </textarea>
 
-    <div class="flex justify-end gap-2">
-      <button (click)="closeReplyModal()">
+    <div class="flex justify-end gap-3">
+      <button
+        (click)="closeReplyModal()"
+        class="px-6 py-3 font-bold text-slate-500 hover:bg-slate-50 rounded-xl"
+      >
         Cancel
       </button>
 
-      <button (click)="sendReply()" class="btn btn-primary">
-        Send
+      <button
+        (click)="sendReply()"
+        [disabled]="!replyText.trim()"
+        class="px-8 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-all disabled:opacity-50"
+      >
+        <i class="fas fa-paper-plane mr-2"></i> Send Reply
       </button>
     </div>
-
   </div>
 </div>

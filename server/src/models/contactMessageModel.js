@@ -1,55 +1,36 @@
 import mongoose from "mongoose";
-
-const contactMessageSchema = new mongoose.Schema(
+const contactMessageModel  = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
+    name: { type: String, required: true },
     email: {
       type: String,
       required: true,
-      unique: true,
-      RegExp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      lowercase: true,
+      // استخدم match بدلاً من RegExp
+      match: [
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        "Please enter a valid email address",
+      ],
     },
-    subject: {
-      type: String,
-      required: true,
-    },
+    subject: { type: String, required: true },
     phone: {
       type: String,
       required: false,
-      unique: true,
       default: "",
-      RegExp: /^\+?[1-9]\d{1,14}$/,
+      // تأكد من أن الـ Regex هنا يسمح بالأرقام العادية
+      match: [
+        /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,
+        "Please enter a valid phone number",
+      ],
     },
-    compenyName: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    message: {
-      type: String,
-      required: true,
-    },
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
-    isRead: {
-      type: Boolean,
-      default: false,
-    },
-    isAnswered: {
-      type: Boolean,
-      default: false,
-    },
-    isSpam: {
-      type: Boolean,
-      default: false,
-    },
+    compenyName: { type: String, required: false, default: "" },
+    message: { type: String, required: true },
+    isDeleted: { type: Boolean, default: false },
+    isRead: { type: Boolean, default: false },
+    isAnswered: { type: Boolean, default: false },
+    isSpam: { type: Boolean, default: false },
   },
   { timestamps: true },
 );
 
-export default mongoose.model("ContactMessage", contactMessageSchema);
+export default mongoose.model("ContactMessage", contactMessageModel);

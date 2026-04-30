@@ -7,81 +7,135 @@
   </div>
 </header>
 
-<section class="py-20 bg-white">
-  <div class="custom-container mx-auto px-4">
-    <div class="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-16">
-      <div class="animate-fade-in-left">
-        <h2 class="text-3xl font-bold text-primary mb-8">Send us a Message</h2>
-        <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)" class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="flex flex-col gap-2">
-              <label class="text-sm font-semibold text-slate-700">Full Name *</label>
-              <input
-                type="text"
-                name="name"
-                ngModel
-                required
-                class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
-              />
-            </div>
-            <div class="flex flex-col gap-2">
-              <label class="text-sm font-semibold text-slate-700">Email Address *</label>
-              <input
-                type="email"
-                name="email"
-                ngModel
-                required
-                class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
-              />
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="flex flex-col gap-2">
-              <label class="text-sm font-semibold text-slate-700">Phone Number *</label>
-              <input
-                type="text"
-                name="phone"
-                ngModel
-                required
-                class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
-              />
-            </div>
-            <div class="flex flex-col gap-2">
-              <label class="text-sm font-semibold text-slate-700">Company Name</label>
-              <input
-                type="text"
-                name="compony-name"
-                ngModel
-                required
-                class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
-              />
-            </div>
-          </div>
+<section class="py-20 bg-white custom-container">
+  <div class="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-12">
+    <div class="animate-fade-in-left">
+      <h2 class="text-3xl font-bold text-primary mb-8">Send us a Message</h2>
+
+      <!-- رسالة نجاح الإرسال -->
+      <div
+        *ngIf="showSuccessMessage"
+        class="mb-6 p-4 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-100 flex items-center gap-3 animate-bounce"
+      >
+        <i class="fas fa-check-circle text-xl"></i>
+        <span class="font-bold"
+          >Your message has been sent successfully! We'll get back to you soon.</span
+        >
+      </div>
+
+      <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)" class="space-y-6" novalidate>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Full Name -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold text-slate-700">Subject *</label>
-            <select
-              name="subject"
+            <label class="text-sm font-semibold text-slate-700">Full Name *</label>
+            <input
+              type="text"
+              name="name"
               ngModel
               required
-              class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+              minlength="3"
+              #name="ngModel"
+              class="p-3 border rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+              [class.border-red-500]="name.invalid && name.touched"
+              [class.border-slate-200]="!(name.invalid && name.touched)"
+            />
+            <span *ngIf="name.invalid && name.touched" class="text-xs text-red-500"
+              >Name is required (min 3 characters).</span
             >
-              <option value="">Select a subject</option>
-              <option value="project">Project Proposal</option>
-              <option value="support">Technical Support</option>
-            </select>
           </div>
 
+          <!-- Email Address -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold text-slate-700">Message *</label>
-            <textarea
-              name="message"
+            <label class="text-sm font-semibold text-slate-700">Email Address *</label>
+            <input
+              type="email"
+              name="email"
               ngModel
-              rows="6"
               required
-              class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
-            ></textarea>
+              email
+              #email="ngModel"
+              class="p-3 border rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+              [class.border-red-500]="email.invalid && email.touched"
+              [class.border-slate-200]="!(email.invalid && email.touched)"
+            />
+            <span *ngIf="email.invalid && email.touched" class="text-xs text-red-500"
+              >Please enter a valid email address.</span
+            >
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Phone Number -->
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-slate-700">Phone Number *</label>
+            <input
+              type="text"
+              name="phone"
+              ngModel
+              required
+              pattern="^[0-9+\s-]*$"
+              #phone="ngModel"
+              class="p-3 border rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+              [class.border-red-500]="phone.invalid && phone.touched"
+              [class.border-slate-200]="!(phone.invalid && phone.touched)"
+            />
+            <span *ngIf="phone.invalid && phone.touched" class="text-xs text-red-500"
+              >Valid phone number is required.</span
+            >
           </div>
 
+          <!-- Company Name -->
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-slate-700">Company Name</label>
+            <input
+              type="text"
+              name="companyName"
+              ngModel
+              class="p-3 border border-slate-200 rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+            />
+          </div>
+        </div>
+
+        <!-- Subject -->
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-semibold text-slate-700">Subject *</label>
+          <input
+            type="text"
+            name="subject"
+            ngModel
+            required
+            #subject="ngModel"
+            placeholder="e.g. Project Inquiry"
+            class="p-3 border rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+            [class.border-red-500]="subject.invalid && subject.touched"
+            [class.border-slate-200]="!(subject.invalid && subject.touched)"
+          />
+          <span *ngIf="subject.invalid && subject.touched" class="text-xs text-red-500"
+            >Subject is required.</span
+          >
+        </div>
+
+        <!-- Message -->
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-semibold text-slate-700">Message *</label>
+          <textarea
+            name="message"
+            ngModel
+            rows="6"
+            required
+            minlength="10"
+            #message="ngModel"
+            class="p-3 border rounded-lg focus:ring-3 focus:ring-secondary/10 focus:border-secondary outline-none transition-all"
+            [class.border-red-500]="message.invalid && message.touched"
+            [class.border-slate-200]="!(message.invalid && message.touched)"
+          ></textarea>
+          <span *ngIf="message.invalid && message.touched" class="text-xs text-red-500"
+            >Message must be at least 10 characters long.</span
+          >
+        </div>
+
+        <!-- Privacy Policy -->
+        <div class="flex flex-col gap-1">
           <div class="flex items-center gap-3">
             <input
               type="checkbox"
@@ -89,75 +143,83 @@
               name="privacy"
               ngModel
               required
-              class="w-5 h-5 accent-secondary"
+              #privacy="ngModel"
+              class="w-5 h-5 accent-secondary cursor-pointer"
             />
-            <label for="privacy" class="text-sm text-slate-600"
-              >I agree to the privacy policy and terms of service</label
+            <label for="privacy" class="text-sm text-slate-600 cursor-pointer"
+              >I agree to the privacy policy and terms of service *</label
             >
           </div>
-
-          <button
-            type="submit"
-            [disabled]="!contactForm.valid"
-            class="bg-secondary text-white px-8 py-4 rounded-lg font-bold hover:bg-secondary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-lg shadow-secondary/20"
+          <span *ngIf="privacy.invalid && privacy.touched" class="text-xs text-red-500"
+            >You must agree to continue.</span
           >
-            Send Message
-          </button>
-        </form>
-      </div>
+        </div>
 
-      <div class="space-y-8 animate-fade-in-right">
-        <h2 class="text-3xl font-bold text-primary mb-8">Contact Information</h2>
+        <button
+          type="submit"
+          [disabled]="isSubmitting"
+          class="bg-secondary text-white px-8 py-4 rounded-lg font-bold hover:bg-secondary/90 transition-all disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer shadow-lg shadow-secondary/20 flex items-center justify-center gap-2 min-w-[180px]"
+        >
+          <i *ngIf="isSubmitting" class="fas fa-spinner animate-spin"></i>
+          {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+        </button>
+      </form>
+    </div>
 
-        @for (info of contactInfo; track info.title) {
+    <!-- Contact Info Section -->
+    <div class="space-y-8 animate-fade-in-right">
+      <h2 class="text-3xl font-bold text-primary mb-8">Contact Information</h2>
+
+      @for (info of contactInfo; track info.title) {
+        <div
+          class="flex gap-4 p-6 bg-[#F8FAFC] rounded-xl border border-slate-100 hover:translate-x-2 hover:shadow-md transition-all duration-300"
+        >
           <div
-            class="flex gap-4 p-6 bg-[#F8FAFC] rounded-xl border border-slate-100 hover:translate-x-2 hover:shadow-md transition-all duration-300"
+            class="w-12 h-12 shrink-0 bg-gradient-to-br from-secondary to-accent rounded-xl flex items-center justify-center text-white text-xl"
           >
-            <div
-              class="w-12 h-12 shrink-0 bg-gradient-to-br from-secondary to-accent rounded-xl flex items-center justify-center text-white text-xl"
-            >
-              <i [class]="info.icon"></i>
-            </div>
-            <div class="info-content">
-              <h4 class="font-bold text-primary mb-1">{{ info.title }}</h4>
-              @if (info.link) {
-                <a
-                  [href]="info.link"
-                  class="text-slate-600 text-sm hover:text-secondary hover:underline"
-                  >{{ info.content }}</a
-                >
-              } @else {
-                <p class="text-slate-600 text-sm leading-relaxed">{{ info.content }}</p>
-              }
-            </div>
+            <i [class]="info.icon"></i>
           </div>
-        }
+          <div class="info-content">
+            <h4 class="font-bold text-primary mb-1">{{ info.title }}</h4>
+            @if (info.link) {
+              <a
+                [href]="info.link"
+                class="text-slate-600 text-sm hover:text-secondary hover:underline"
+                >{{ info.content }}</a
+              >
+            } @else {
+              <p class="text-slate-600 text-sm leading-relaxed">{{ info.content }}</p>
+            }
+          </div>
+        </div>
+      }
 
-        <div class="pt-6">
-          <h4 class="font-bold text-primary mb-4">Follow Us</h4>
-          <div class="flex gap-3">
-            <a
-              href="#"
-              class="w-11 h-11 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center text-white hover:-translate-y-1 transition-all"
-              ><i class="fab fa-twitter"></i
-            ></a>
-            <a
-              href="#"
-              class="w-11 h-11 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center text-white hover:-translate-y-1 transition-all"
-              ><i class="fab fa-linkedin"></i
-            ></a>
-            <a
-              href="#"
-              class="w-11 h-11 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center text-white hover:-translate-y-1 transition-all"
-              ><i class="fab fa-github"></i
-            ></a>
-          </div>
+      <!-- Social Links -->
+      <div class="pt-6">
+        <h4 class="font-bold text-primary mb-4">Follow Us</h4>
+        <div class="flex gap-3">
+          <a
+            href="#"
+            class="w-11 h-11 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center text-white hover:-translate-y-1 transition-all"
+            ><i class="fab fa-twitter"></i
+          ></a>
+          <a
+            href="#"
+            class="w-11 h-11 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center text-white hover:-translate-y-1 transition-all"
+            ><i class="fab fa-linkedin"></i
+          ></a>
+          <a
+            href="#"
+            class="w-11 h-11 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center text-white hover:-translate-y-1 transition-all"
+            ><i class="fab fa-github"></i
+          ></a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- FAQ Section -->
 <section class="py-20 bg-gradient-to-br from-[#F8FAFC] to-[#E0E7FF]">
   <div class="custom-container mx-auto px-4 max-w-4xl">
     <h2 class="text-3xl font-bold text-center text-primary mb-12">Frequently Asked Questions</h2>
