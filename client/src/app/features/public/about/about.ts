@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import IMember from '../../../core/models/member.model';
+import { MemberService } from './../../../core/services/members/member-service';
 
 @Component({
   selector: 'app-about',
@@ -7,32 +9,24 @@ import { Component } from '@angular/core';
   styleUrl: './about.css',
 })
 export class About {
-  team = [
-    {
-      name: 'Alex Johnson',
-      role: 'CEO & Founder',
-      bio: 'Visionary leader with 12 years of tech industry experience.',
-      gradient: 'from-[#667eea] to-[#764ba2]'
-    },
-    {
-      name: 'Maya Patel',
-      role: 'CTO & Co-Founder',
-      bio: 'Technical strategist with expertise in scalable architecture.',
-      gradient: 'from-[#f093fb] to-[#f5576c]'
-    },
-    {
-      name: 'David Chen',
-      role: 'Head of Design',
-      bio: 'Creative director focused on user-centered design principles.',
-      gradient: 'from-[#4facfe] to-[#00f2fe]'
-    },
-    {
-      name: 'Lisa Anderson',
-      role: 'Lead Developer',
-      bio: 'Full-stack engineer specializing in cloud technologies.',
-      gradient: 'from-[#fa709a] to-[#fee140]'
-    }
-  ];
+  private memberService = inject(MemberService);
+  private cdr = inject(ChangeDetectorRef);
+  members: IMember[] = [];
+
+  ngOnInit() {
+    this.loadMembers();
+    this.cdr.detectChanges()
+
+  }
+  loadMembers() {
+    this.memberService.getMembers().subscribe({
+      next: (res: any) => {
+        this.members = res.data || res;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error loading members', err)
+    });
+  }
 
   values = [
     { title: 'Innovation', icon: 'fas fa-lightbulb', desc: 'We constantly push boundaries and embrace new technologies.' },

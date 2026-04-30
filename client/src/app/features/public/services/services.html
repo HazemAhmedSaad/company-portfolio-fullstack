@@ -24,7 +24,10 @@
             class="w-16 h-16 bg-primary text-white rounded-2xl flex items-center justify-center text-2xl mb-8 group-hover:bg-secondary transition-colors"
           >
             <div class="service-icon-large">
-              <img [src]="'http://localhost:5000/uploads/' + service.imageIcon" alt="" />
+              <img
+                [src]="'http://localhost:5000/uploads/' + service.imageIcon"
+                [alt]="service.title"
+              />
             </div>
           </div>
           <h3 class="text-2xl font-bold text-primary mb-4">{{ service.title }}</h3>

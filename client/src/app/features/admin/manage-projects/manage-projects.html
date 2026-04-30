@@ -5,7 +5,10 @@
       <p class="text-slate-500 mt-1">Manage and showcase your best work to clients.</p>
     </div>
 
-    <button (click)="openModal()" class="btn btn-primary shadow-lg shadow-indigo-200 group">
+    <button
+      (click)="openModal()"
+      class="group btn btn-primary px-6 shadow-lg shadow-indigo-200 flex items-center py-1 gap-2 transition-all hover:-translate-y-0.5"
+    >
       <i class="fas fa-plus-circle mr-2 transition-transform group-hover:rotate-90"></i>
       New Project
     </button>
@@ -112,7 +115,7 @@
 
 <div
   *ngIf="isModalOpen"
-  class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm animate-fade-in"
+  class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 animate-fade-in"
   (click)="closeModal()"
 >
   <div

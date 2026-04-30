@@ -1,71 +1,144 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import IMember from '../../../core/models/member.model';
+import { MemberService } from '../../../core/services/members/member-service';
+
 
 @Component({
   selector: 'app-manage-members',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './manage-members.html',
   styleUrl: './manage-members.css',
 })
-export class ManageMembers {
-  team = [
-    {
-      id: 1,
-      name: 'John Smith',
-      role: 'CEO & Founder',
-      bio: 'Visionary leader with 15+ years of industry experience. Passionate about innovation.',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
-      skills: ['Leadership', 'Strategy']
-    },
-    {
-      id: 2,
-      name: 'Sarah Johnson',
-      role: 'CTO',
-      bio: 'Technology expert driving innovation. Specialized in architecture and cloud solutions.',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
-      skills: ['Architecture', 'Node.js']
-    }
-  ];
+export class ManageMembers implements OnInit {
+  private memberService = inject(MemberService);
+  private fb = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
+
+  members: IMember[] = [];
+  memberForm!: FormGroup;
 
   isModalOpen = false;
   isEditMode = false;
-  currentMember: any = { name: '', role: '', bio: '', skills: '' };
+  submitted = false;
+  selectedFile: File | null = null;
+  currentMemberId: string | null = null;
 
-  openModal(member?: any) {
+  ngOnInit() {
+    this.initForm();
+    this.loadMembers();
+    this.cdr.detectChanges();
+  }
+
+  initForm() {
+    this.memberForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      jobTitle: ['', [Validators.required]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      position: ['', [Validators.required]], // ستُعامل كنص مفصول بفواصل
+      email: ['', [Validators.required, Validators.email]],
+      image: [null]
+    });
+  }
+
+  loadMembers() {
+    this.memberService.getMembers().subscribe({
+      next: (res: any) => {
+        this.members = res.data || res;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error loading members', err)
+    });
+  }
+
+  onFileSelected(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+    }
+  }
+
+  openModal(member?: IMember) {
+    this.submitted = false;
     this.isEditMode = !!member;
-    this.currentMember = member
-      ? { ...member, skills: member.skills.join(', ') }
-      : { name: '', role: '', bio: '', skills: '' };
+    this.currentMemberId = member ? member._id : null;
+    this.selectedFile = null;
+
+    if (member) {
+      this.memberForm.patchValue({
+        name: member.name,
+        jobTitle: member.jobTitle,
+        description: member.description,
+        position: member.position.join(', '),
+        email: member.email
+      });
+    } else {
+      this.memberForm.reset();
+    }
     this.isModalOpen = true;
   }
 
   closeModal() {
     this.isModalOpen = false;
+    this.memberForm.reset();
+  }
+
+  // ميثود مساعدة لعرض الأخطاء في الـ HTML
+  isInvalid(controlName: string) {
+    const control = this.memberForm.get(controlName);
+    return control?.invalid && (control.touched || this.submitted);
   }
 
   submitMember() {
-    const skillsArray = this.currentMember.skills.split(',').map((s: string) => s.trim());
+    this.submitted = true;
 
-    if (this.isEditMode) {
-      const index = this.team.findIndex(m => m.id === this.currentMember.id);
-      this.team[index] = { ...this.currentMember, skills: skillsArray };
+    if (this.memberForm.invalid) return;
+
+    // تجهيز البيانات كـ FormData لأن الـ Service يتطلب ذلك (لرفع الصور)
+    const formData = new FormData();
+    formData.append('name', this.memberForm.value.name);
+    formData.append('jobTitle', this.memberForm.value.jobTitle);
+    formData.append('description', this.memberForm.value.description);
+    formData.append('email', this.memberForm.value.email);
+
+    // تحويل الـ position من نص إلى مصفوفة
+    const positions = this.memberForm.value.position.split(',').map((p: string) => p.trim());
+    positions.forEach((p: string) => formData.append('position', p));
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    if (this.isEditMode && this.currentMemberId) {
+      this.memberService.updateMember(this.currentMemberId, formData).subscribe({
+        next: () => {
+          this.loadMembers();
+          this.closeModal();
+          this.cdr.detectChanges();
+        },
+        error: (err) => alert(err.error?.message || 'Update failed')
+      });
     } else {
-      const newMember = {
-        ...this.currentMember,
-        id: Date.now(),
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${this.currentMember.name}`,
-        skills: skillsArray
-      };
-      this.team.push(newMember);
-    }
-    this.closeModal();
-  }
-
-  deleteMember(id: number) {
-    if (confirm('Remove this member from the team?')) {
-      this.team = this.team.filter(m => m.id !== id);
+      this.memberService.addMember(formData).subscribe({
+        next: (res: any) => {
+          this.members = [res.data, ...this.members];
+          this.closeModal();
+        },
+        error: (err) => console.error(err)
+      });
     }
   }
 
+  deleteMember(id: string) {
+    this.memberService.deleteMember(id).subscribe({
+      next: () => {
+        this.members = this.members.filter(m => m._id !== id)
+        this.cdr.detectChanges();
+      }
+
+      ,
+      error: (err) => alert(err.error?.message || 'Delete failed')
+    });
+  }
 }
