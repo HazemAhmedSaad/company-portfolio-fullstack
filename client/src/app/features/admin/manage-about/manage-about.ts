@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+//  دى زيادة هتتعمل فى  version 2 of website
 @Component({
   selector: 'app-maage-about',
   imports: [FormsModule, CommonModule],
@@ -30,7 +31,6 @@ export class MaageAbout {
 
   saveInfo() {
     console.log('Saving Info:', this.companyInfo);
-    // Logic to call API
   }
 
   editMember(member: any) {

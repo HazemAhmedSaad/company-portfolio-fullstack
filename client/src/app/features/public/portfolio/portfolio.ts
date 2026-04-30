@@ -16,7 +16,6 @@ export class Portfolio {
     { title: 'Fitness App', category: 'mobile', description: 'Workout tracking & community', gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' },
     { title: 'Business Intelligence', category: 'dashboard', description: 'Executive reporting tool', gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
     { title: 'Booking Platform', category: 'web', description: 'Service reservation system', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
-    // أضف المزيد هنا...
   ];
 
   setFilter(filter: string) {

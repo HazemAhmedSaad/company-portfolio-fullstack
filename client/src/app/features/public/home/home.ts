@@ -6,6 +6,8 @@ import { RouterLink } from '@angular/router';
   imports: [CommonModule, RouterLink], templateUrl: './home.html',
   styleUrl: './home.css',
 })
+
+//هعمل دى فى version 2 انشاء الله يادكتور  لانى شايف انها حاجه زيادة فى الموقع مش اساسية
 export class Home {
   services = [
     { title: 'Web Development', desc: 'Custom web applications built with modern frameworks.', icon: 'fa-globe', link: '/services#web-dev' },

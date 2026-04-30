@@ -37,7 +37,7 @@ export class ManageMembers implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3)]],
       jobTitle: ['', [Validators.required]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      position: ['', [Validators.required]], // ستُعامل كنص مفصول بفواصل
+      position: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       image: [null]
     });
@@ -84,7 +84,6 @@ export class ManageMembers implements OnInit {
     this.memberForm.reset();
   }
 
-  // ميثود مساعدة لعرض الأخطاء في الـ HTML
   isInvalid(controlName: string) {
     const control = this.memberForm.get(controlName);
     return control?.invalid && (control.touched || this.submitted);
@@ -95,14 +94,12 @@ export class ManageMembers implements OnInit {
 
     if (this.memberForm.invalid) return;
 
-    // تجهيز البيانات كـ FormData لأن الـ Service يتطلب ذلك (لرفع الصور)
     const formData = new FormData();
     formData.append('name', this.memberForm.value.name);
     formData.append('jobTitle', this.memberForm.value.jobTitle);
     formData.append('description', this.memberForm.value.description);
     formData.append('email', this.memberForm.value.email);
 
-    // تحويل الـ position من نص إلى مصفوفة
     const positions = this.memberForm.value.position.split(',').map((p: string) => p.trim());
     positions.forEach((p: string) => formData.append('position', p));
 

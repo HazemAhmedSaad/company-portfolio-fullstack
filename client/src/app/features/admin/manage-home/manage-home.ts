@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+//  دى زيادة هتتعمل فى  version 2 of website
 
 @Component({
   selector: 'app-manage-home',
@@ -20,7 +21,6 @@ export class MaageHome {
 
   onSave() {
     console.log('Saving Home Content:', this.heroData);
-    // هنا يتم استدعاء الخدمة (Service) لحفظ البيانات في قاعدة البيانات
     alert('Changes saved successfully!');
   }
 
@@ -28,7 +28,6 @@ export class MaageHome {
     const file = event.target.files[0];
     if (file) {
       console.log('Image uploaded:', file.name);
-      // منطق رفع الصورة
     }
   }
 }

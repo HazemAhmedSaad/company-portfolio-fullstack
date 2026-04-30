@@ -1,5 +1,4 @@
 <section id="team" class="p-6 animate-fade-in">
-  <!-- Header -->
   <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
       <h1 class="text-3xl font-black text-slate-900 tracking-tight">Our Team</h1>
@@ -13,7 +12,6 @@
     </button>
   </div>
 
-  <!-- Members Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     @for (member of members; track member) {
       <div
@@ -41,7 +39,6 @@
             <div
               class="absolute inset-0 bg-indigo-500 rounded-full blur-2xl opacity-10 group-hover:opacity-30 transition-opacity"
             ></div>
-            <!-- عرض الصورة من السيرفر -->
             <img
               [src]="
                 member.image
@@ -76,7 +73,6 @@
   </div>
 </section>
 
-<!-- Modal -->
 <div
   *ngIf="isModalOpen"
   class="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-slate-900/60"
@@ -95,10 +91,8 @@
       </button>
     </div>
 
-    <!-- Reactive Form -->
     <form [formGroup]="memberForm" (ngSubmit)="submitMember()" class="p-8 space-y-4">
       <div class="grid grid-cols-2 gap-4">
-        <!-- Name -->
         <div>
           <label class="text-[10px] font-black uppercase text-slate-400 ml-2">Full Name</label>
           <input
@@ -154,7 +148,6 @@
           </p>
         </div>
 
-        <!-- Positions / Skills -->
         <div>
           <label class="text-[10px] font-black uppercase text-slate-400 ml-2"
             >Positions (comma separated)</label
@@ -192,7 +185,6 @@
           Description is required (min 10 chars)
         </p>
       </div >
-      <!-- File Upload -->
       <div>
         <label class="text-[10px] font-black uppercase text-slate-400 ml-2">Profile Image</label>
         <input

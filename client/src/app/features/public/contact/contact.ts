@@ -35,7 +35,6 @@ export class Contact {
 
   onSubmit(form: NgForm) {
     if (form.invalid) {
-      // مارك كل الحقول كـ Touched لإظهار الأخطاء إذا حاول الإرسال وهو فارغ
       Object.keys(form.controls).forEach(field => {
         const control = form.controls[field];
         control.markAsTouched({ onlySelf: true });
@@ -45,7 +44,6 @@ export class Contact {
 
     this.isSubmitting = true;
 
-    // قمت بتصحيح اسم الشركة من compenyName إلى companyName للاحترافية
     const messageData = {
       ...form.value,
       companyName: form.value.companyName || 'N/A',
@@ -53,13 +51,14 @@ export class Contact {
     };
 
     this.messageService.addMessage(messageData).subscribe({
-      next: (response) => {
+      next: () => {
         this.isSubmitting = false;
         this.showSuccessMessage = true;
         form.resetForm();
+        setTimeout(() => (this.showSuccessMessage = false), 100);
         this.cdr.detectChanges();
-        // إخفاء رسالة النجاح بعد 5 ثوانٍ لتعطي فرصة للمستخدم لرؤيتها
-        setTimeout(() => (this.showSuccessMessage = false), 5000);
+
+
       },
       error: (err) => {
         console.error('Failed to send message:', err);

@@ -20,7 +20,7 @@ export class ManageServices implements OnInit {
   serviceForm!: FormGroup;
   isAddModalOpen = false;
   isEditModalOpen = false;
-  submitted = false; // Flag للتحقق من الضغط على زر الإرسال
+  submitted = false; 
   selectedFile: File | null = null;
   currentServiceId: string | null = null;
 
@@ -84,7 +84,6 @@ export class ManageServices implements OnInit {
     this.submitted = false;
   }
 
-  // ميثود مساعدة لفحص حالة الحقل
   isInvalid(controlName: string): boolean {
     const control = this.serviceForm.get(controlName);
     return !!(control && control.invalid && (control.dirty || control.touched || this.submitted));
@@ -93,7 +92,6 @@ export class ManageServices implements OnInit {
   submitService() {
     this.submitted = true;
 
-    // منع الإرسال إذا كانت البيانات ناقصة أو الصورة غير موجودة في حالة الإضافة
     if (this.serviceForm.invalid || (!this.isEditModalOpen && !this.selectedFile)) {
       return;
     }

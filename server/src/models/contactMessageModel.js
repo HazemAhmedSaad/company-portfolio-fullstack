@@ -6,7 +6,6 @@ const contactMessageModel  = new mongoose.Schema(
       type: String,
       required: true,
       lowercase: true,
-      // استخدم match بدلاً من RegExp
       match: [
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         "Please enter a valid email address",
@@ -17,7 +16,6 @@ const contactMessageModel  = new mongoose.Schema(
       type: String,
       required: false,
       default: "",
-      // تأكد من أن الـ Regex هنا يسمح بالأرقام العادية
       match: [
         /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/,
         "Please enter a valid phone number",

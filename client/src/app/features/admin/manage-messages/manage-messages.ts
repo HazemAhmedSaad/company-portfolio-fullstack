@@ -81,7 +81,12 @@ export class ManageMessages implements OnInit {
   }
 
   deleteMessage(id: string) {
-    this.messages = this.messages.filter(m => m._id !== id);
+    this.messageService.deleteMessage(id).subscribe({
+      next: () => {
+        this.messages = this.messages.filter(m => m._id !== id);
+        this.cdr.detectChanges();
+      }
+    })
     this.cdr.detectChanges();
   }
 }
